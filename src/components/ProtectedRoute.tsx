@@ -1,8 +1,6 @@
 
-import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -10,25 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAuthorized, setIsAuthorized] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        setIsAuthorized(false);
-      } else if (adminOnly && user.email === "yekinirasheed2002@gmail.com") {
-        setIsAuthorized(true);
-      } else if (!adminOnly) {
-        setIsAuthorized(true);
-      } else {
-        setIsAuthorized(false);
-      }
-      setIsLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [adminOnly]);
+  const { isLoading, user, isAdmin } = useGoogleAuth();
 
   if (isLoading) {
     return (
@@ -41,8 +21,12 @@ const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) =>
     );
   }
 
-  if (!isAuthorized) {
+  if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (adminOnly && !isAdmin) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

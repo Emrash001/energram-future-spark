@@ -1,12 +1,11 @@
 
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "./ThemeToggle";
-import { Menu, X, LogIn, LogOut } from "lucide-react";
+import { Menu, X, LogIn, LogOut, ChevronDown, User } from "lucide-react";
 import EnergamLogo from "./EnergamLogo";
-import { auth } from "@/lib/firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,8 +16,9 @@ import {
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user, signOut, isAdmin } = useGoogleAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,39 +31,29 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
     
-    // Auth state listener
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      unsubscribe();
     };
   }, []);
 
+  useEffect(() => {
+    // Close mobile menu when route changes
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigate('/');
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
   };
 
   const navLinks = [
     { text: "Technology", href: "/technology" },
     { text: "Pricing", href: "/pricing" },
     { text: "App", href: "/download" },
+    { text: "Learn More", href: "/learn-more" },
+    { text: "See in Action", href: "/see-in-action" },
     { text: "Contact", href: "/contact" },
     { text: "FAQ", href: "/faq" },
   ];
-
-  const isAdmin = user?.email === "yekinirasheed2002@gmail.com";
 
   return (
     <header
@@ -99,18 +89,19 @@ const Navbar = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className="relative">
                     <span className="w-2 h-2 absolute right-2 top-2 bg-green-500 rounded-full"></span>
-                    {user.email?.split('@')[0] || 'Account'}
+                    {user.displayName || user.email?.split('@')[0] || 'Account'}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   {isAdmin && (
                     <DropdownMenuItem asChild>
                       <Link to="/admin" className="w-full cursor-pointer">
+                        <User className="mr-2 h-4 w-4" />
                         Admin Dashboard
                       </Link>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                  <DropdownMenuItem onClick={signOut} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Logout</span>
                   </DropdownMenuItem>
@@ -160,7 +151,6 @@ const Navbar = () => {
               <Link
                 key={link.text}
                 to={link.href.startsWith("#") ? `/${link.href}` : link.href}
-                onClick={() => setMobileMenuOpen(false)}
                 className="block py-2 font-medium text-foreground/80 hover:text-foreground"
               >
                 {link.text}
@@ -172,17 +162,14 @@ const Navbar = () => {
                 {isAdmin && (
                   <Link
                     to="/admin"
-                    onClick={() => setMobileMenuOpen(false)}
                     className="block py-2 font-medium text-foreground/80 hover:text-foreground"
                   >
+                    <User className="inline-block mr-2 h-4 w-4" />
                     Admin Dashboard
                   </Link>
                 )}
                 <button
-                  onClick={() => {
-                    handleLogout();
-                    setMobileMenuOpen(false);
-                  }}
+                  onClick={signOut}
                   className="flex items-center py-2 font-medium text-foreground/80 hover:text-foreground w-full"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -192,7 +179,6 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center py-2 font-medium text-foreground/80 hover:text-foreground"
               >
                 <LogIn className="mr-2 h-4 w-4" />
@@ -204,7 +190,7 @@ const Navbar = () => {
               asChild
               className="w-full mt-4 bg-gradient-to-r from-solar-500 to-tech-500 text-white hover:from-solar-700 hover:to-tech-700"
             >
-              <Link to="/order" onClick={() => setMobileMenuOpen(false)}>Order Now</Link>
+              <Link to="/order">Order Now</Link>
             </Button>
           </div>
         </div>

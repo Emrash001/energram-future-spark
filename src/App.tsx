@@ -21,6 +21,8 @@ import WhatsAppButton from "./components/WhatsAppButton";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import FAQPage from "./pages/FAQPage";
+import LearnMorePage from "./pages/LearnMorePage";
+import SeeInActionPage from "./pages/SeeInActionPage";
 
 // Create a new QueryClient instance inside the component function
 const App = () => {
@@ -45,6 +47,8 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/faq" element={<FAQPage />} />
+            <Route path="/learn-more" element={<LearnMorePage />} />
+            <Route path="/see-in-action" element={<SeeInActionPage />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route 
               path="/admin" 

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "./ThemeToggle";
 import { Menu, X } from "lucide-react";
+import EnergamLogo from "./EnergamLogo";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,11 +28,12 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { text: "Technology", href: "#technology" },
+    { text: "Technology", href: "/technology" },
     { text: "Impact", href: "#impact" },
-    { text: "App", href: "#app" },
-    { text: "Pricing", href: "#pricing" },
+    { text: "App", href: "/download" },
+    { text: "Pricing", href: "/pricing" },
     { text: "Support", href: "#support" },
+    { text: "Contact", href: "/contact" },
   ];
 
   return (
@@ -46,26 +48,27 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center">
-              <span className="font-display font-bold text-xl md:text-2xl bg-gradient-to-r from-tech-700 to-solar-500 bg-clip-text text-transparent">
-                Energram
-              </span>
+              <EnergamLogo variant="full" />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.text}
-                href={link.href}
+                to={link.href.startsWith("#") ? `/${link.href}` : link.href}
                 className="font-medium text-foreground/80 hover:text-foreground transition-colors"
               >
                 {link.text}
-              </a>
+              </Link>
             ))}
             <ThemeToggle />
-            <Button className="bg-gradient-to-r from-solar-500 to-tech-500 text-white hover:from-solar-700 hover:to-tech-700 transition-all">
-              Download App
+            <Button 
+              asChild
+              className="bg-gradient-to-r from-solar-500 to-tech-500 text-white hover:from-solar-700 hover:to-tech-700 transition-all"
+            >
+              <Link to="/order">Order Now</Link>
             </Button>
           </nav>
 
@@ -90,17 +93,20 @@ const Navbar = () => {
         <div className="md:hidden bg-background border-b">
           <div className="px-4 pt-2 pb-6 space-y-3">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.text}
-                href={link.href}
+                to={link.href.startsWith("#") ? `/${link.href}` : link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className="block py-2 font-medium text-foreground/80 hover:text-foreground"
               >
                 {link.text}
-              </a>
+              </Link>
             ))}
-            <Button className="w-full mt-4 bg-gradient-to-r from-solar-500 to-tech-500 text-white hover:from-solar-700 hover:to-tech-700">
-              Download App
+            <Button 
+              asChild
+              className="w-full mt-4 bg-gradient-to-r from-solar-500 to-tech-500 text-white hover:from-solar-700 hover:to-tech-700"
+            >
+              <Link to="/order">Order Now</Link>
             </Button>
           </div>
         </div>

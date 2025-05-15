@@ -19,39 +19,43 @@ import AdminPanel from "./pages/AdminPanel";
 import ProtectedRoute from "./components/ProtectedRoute";
 import WhatsAppButton from "./components/WhatsAppButton";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/waitlist" element={<WaitlistPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/technology" element={<TechnologyPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/order" element={<OrderPage />} />
-          <Route path="/confirmation" element={<ConfirmationPage />} />
-          <Route path="/download" element={<DownloadPage />} />
-          <Route path="/admin-login" element={<AdminLogin />} />
-          <Route 
-            path="/admin" 
-            element={
-              <ProtectedRoute adminOnly>
-                <AdminPanel />
-              </ProtectedRoute>
-            } 
-          />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <WhatsAppButton />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+// Create a new QueryClient instance inside the component function
+const App = () => {
+  // Initialize the QueryClient inside the component
+  const queryClient = new QueryClient();
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/waitlist" element={<WaitlistPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/technology" element={<TechnologyPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/order" element={<OrderPage />} />
+            <Route path="/confirmation" element={<ConfirmationPage />} />
+            <Route path="/download" element={<DownloadPage />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
+            <Route 
+              path="/admin" 
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminPanel />
+                </ProtectedRoute>
+              } 
+            />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <WhatsAppButton />
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

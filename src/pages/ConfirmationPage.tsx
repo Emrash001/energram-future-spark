@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Check } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const ConfirmationPage = () => {
+  const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const paymentRef = searchParams.get('ref') || '';
   const [orderDetails, setOrderDetails] = useState<any>(null);
@@ -30,6 +32,13 @@ const ConfirmationPage = () => {
         } else {
           const orderData = querySnapshot.docs[0].data();
           setOrderDetails(orderData);
+
+          // Show success toast
+          toast({
+            title: "Order confirmed",
+            description: "Thank you for your purchase!",
+            variant: "default"
+          });
         }
       } catch (err) {
         console.error("Error fetching order: ", err);
@@ -40,7 +49,7 @@ const ConfirmationPage = () => {
     };
     
     fetchOrderDetails();
-  }, [paymentRef]);
+  }, [paymentRef, toast]);
 
   if (loading) {
     return (
@@ -107,7 +116,7 @@ const ConfirmationPage = () => {
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-foreground/70">Amount:</dt>
-                    <dd className="font-medium">₦{orderDetails.amount.toLocaleString()}</dd>
+                    <dd className="font-medium">₦{orderDetails.amount?.toLocaleString()}</dd>
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-foreground/70">Order Reference:</dt>

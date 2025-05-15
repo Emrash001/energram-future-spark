@@ -1,11 +1,12 @@
 
 import { useState, useEffect } from "react";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db, auth } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/FormField";
 import { useToast } from "@/hooks/use-toast";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
 
 interface PaystackResponse {
   message: string;
@@ -32,6 +33,7 @@ const OrderPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [paymentInitiated, setPaymentInitiated] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   
   const defaultPlan = searchParams.get('plan') || 'purchase';
   const [selectedPlan, setSelectedPlan] = useState<'purchase' | 'service'>(defaultPlan as 'purchase' | 'service');
@@ -48,6 +50,19 @@ const OrderPage = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
+    // Get current user if logged in
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+        // Pre-fill form data if user is logged in
+        setFormData(prev => ({
+          ...prev,
+          name: user.displayName || prev.name,
+          email: user.email || prev.email
+        }));
+      }
+    });
+    
     // Load Paystack script
     const script = document.createElement('script');
     script.src = "https://js.paystack.co/v1/inline.js";
@@ -55,6 +70,7 @@ const OrderPage = () => {
     document.body.appendChild(script);
     
     return () => {
+      unsubscribe();
       document.body.removeChild(script);
     };
   }, []);
@@ -124,6 +140,7 @@ const OrderPage = () => {
             amount: getAmount() / 100, // Convert back to Naira
             paymentRef: response.reference,
             status: 'paid',
+            userId: currentUser?.uid || null,
             timestamp: new Date()
           });
           
@@ -177,6 +194,7 @@ const OrderPage = () => {
         plan: selectedPlan,
         amount: getAmount() / 100, // Convert back to Naira
         status: 'pending',
+        userId: currentUser?.uid || null,
         timestamp: new Date()
       });
       

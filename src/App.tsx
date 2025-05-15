@@ -18,6 +18,9 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
 import ProtectedRoute from "./components/ProtectedRoute";
 import WhatsAppButton from "./components/WhatsAppButton";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import FAQPage from "./pages/FAQPage";
 
 // Create a new QueryClient instance inside the component function
 const App = () => {
@@ -39,6 +42,9 @@ const App = () => {
             <Route path="/order" element={<OrderPage />} />
             <Route path="/confirmation" element={<ConfirmationPage />} />
             <Route path="/download" element={<DownloadPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/faq" element={<FAQPage />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route 
               path="/admin" 

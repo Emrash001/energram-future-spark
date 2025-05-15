@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,23 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                solar: {
+                    50: '#FFF7ED',
+                    100: '#FFEDD5',
+                    300: '#FDBA74', 
+                    500: '#F97316', // Main solar orange
+                    700: '#C2410C',
+                    900: '#7C2D12',
+                },
+                tech: {
+                    50: '#F0F9FF', 
+                    100: '#E0F2FE',
+                    300: '#7DD3FC',
+                    500: '#0EA5E9', // Main tech blue
+                    700: '#0369A1',
+                    900: '#0C4A6E',
+                },
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +101,45 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'float': {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-10px)' },
+                },
+                'spin-slow': {
+                    '0%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(360deg)' },
+                },
+                'glow': {
+                    '0%, 100%': { opacity: 1 },
+                    '50%': { opacity: 0.6 },
+                },
+                'fade-in-up': {
+                    '0%': { opacity: 0, transform: 'translateY(20px)' },
+                    '100%': { opacity: 1, transform: 'translateY(0)' },
+                },
+                'pulse': {
+                    '0%, 100%': { opacity: 1 },
+                    '50%': { opacity: 0.5 },
+                },
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'float': 'float 6s ease-in-out infinite',
+                'spin-slow': 'spin-slow 15s linear infinite',
+                'glow': 'glow 2s ease-in-out infinite',
+                'fade-in-up': 'fade-in-up 0.6s ease-out',
+                'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+			},
+            backgroundImage: {
+                'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                'hero-pattern': "url('/img/hero-pattern.svg')",
+            },
+            fontFamily: {
+                'sans': ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                'display': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+            },
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

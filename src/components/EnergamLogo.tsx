@@ -17,7 +17,7 @@ const EnergamLogo = ({ className, variant = "default" }: EnergamLogoProps) => {
       <div className={cn("relative w-16 h-16", className)}>
         <div className={cn(
           "w-full h-full rounded-full overflow-hidden",
-          isDarkMode ? "bg-white p-1 shadow-md" : ""
+          isDarkMode ? "bg-white p-1.5 shadow-lg" : ""
         )}>
           <img
             src={logo}
@@ -33,8 +33,8 @@ const EnergamLogo = ({ className, variant = "default" }: EnergamLogoProps) => {
     return (
       <div className={cn("flex items-center space-x-2", className)}>
         <div className={cn(
-          "w-20 h-20 rounded-full overflow-hidden", 
-          isDarkMode ? "bg-white p-1 shadow-sm" : ""
+          "w-16 h-16 rounded-full overflow-hidden", 
+          isDarkMode ? "bg-white p-1.5 shadow-md" : ""
         )}>
           <img
             src={logo}

@@ -65,6 +65,20 @@ const Navbar = () => {
     return user?.photoURL || '';
   };
 
+  // Check if the link is active
+  const isActiveLink = (path: string) => {
+    // For the home page
+    if (path === "/" && location.pathname === "/") {
+      return true;
+    }
+    // For other pages, check if the pathname starts with the path
+    // but not for root "/" as it would match everything
+    if (path !== "/" && location.pathname.startsWith(path)) {
+      return true;
+    }
+    return false;
+  };
+
   const navLinks = [
     { text: "Technology", href: "/technology" },
     { text: "Pricing", href: "/pricing" },
@@ -97,7 +111,11 @@ const Navbar = () => {
               <Link
                 key={link.text}
                 to={link.href.startsWith("#") ? `/${link.href}` : link.href}
-                className="font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className={`relative font-medium transition-colors ${
+                  isActiveLink(link.href) 
+                    ? "text-foreground after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-solar-500 after:to-tech-500" 
+                    : "text-foreground/70 hover:text-foreground"
+                }`}
               >
                 {link.text}
               </Link>
@@ -191,7 +209,11 @@ const Navbar = () => {
               <Link
                 key={link.text}
                 to={link.href.startsWith("#") ? `/${link.href}` : link.href}
-                className="block py-2 font-medium text-foreground/80 hover:text-foreground"
+                className={`block py-2 font-medium ${
+                  isActiveLink(link.href)
+                    ? "text-foreground relative pl-3 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4 before:w-1 before:bg-gradient-to-b before:from-solar-500 before:to-tech-500 before:rounded-full"
+                    : "text-foreground/70 hover:text-foreground"
+                }`}
               >
                 {link.text}
               </Link>
@@ -202,7 +224,11 @@ const Navbar = () => {
                 {isAdmin && (
                   <Link
                     to="/admin"
-                    className="block py-2 font-medium text-foreground/80 hover:text-foreground"
+                    className={`block py-2 font-medium ${
+                      isActiveLink("/admin")
+                        ? "text-foreground relative pl-3 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4 before:w-1 before:bg-gradient-to-b before:from-solar-500 before:to-tech-500 before:rounded-full"
+                        : "text-foreground/70 hover:text-foreground"
+                    }`}
                   >
                     <User className="inline-block mr-2 h-4 w-4" />
                     Admin Dashboard
@@ -219,7 +245,11 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="flex items-center py-2 font-medium text-foreground/80 hover:text-foreground"
+                className={`flex items-center py-2 font-medium ${
+                  isActiveLink("/login")
+                    ? "text-foreground relative pl-3 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4 before:w-1 before:bg-gradient-to-b before:from-solar-500 before:to-tech-500 before:rounded-full"
+                    : "text-foreground/70 hover:text-foreground"
+                }`}
               >
                 <LogIn className="mr-2 h-4 w-4" />
                 <span>Login</span>

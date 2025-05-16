@@ -112,7 +112,7 @@ const ImpactCounter = () => {
       }`}
     >
       <h2 className="text-2xl font-display font-bold mb-4 text-center">
-        Where We're Headed in the Next 12 Months
+        Our 12-Month Impact Goals
       </h2>
       <p className="text-center mb-8 text-foreground/70 max-w-2xl mx-auto">
         Projected based on pilot testing & product modeling

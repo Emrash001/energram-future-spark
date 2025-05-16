@@ -1,9 +1,9 @@
 
 import { useEffect, useState } from "react";
+import ImpactCounter from "./ImpactCounter";
 
 const ImpactSection = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [counter, setCounter] = useState(0);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,16 +21,6 @@ const ImpactSection = () => {
 
     return () => observer.disconnect();
   }, []);
-  
-  // Counter animation for impact stats
-  useEffect(() => {
-    if (isVisible && counter < 2500) {
-      const timeout = setTimeout(() => {
-        setCounter(prev => Math.min(prev + 50, 2500));
-      }, 20);
-      return () => clearTimeout(timeout);
-    }
-  }, [isVisible, counter]);
 
   const testimonials = [
     {
@@ -131,18 +121,6 @@ const ImpactSection = () => {
                   </div>
                 </div>
               </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
-                <div className="bg-card rounded-lg p-6 shadow-sm">
-                  <div className="text-3xl font-display font-bold text-solar-500">{counter.toLocaleString()}+</div>
-                  <p className="text-sm text-foreground/80 mt-2">Homes and businesses powered</p>
-                </div>
-                
-                <div className="bg-card rounded-lg p-6 shadow-sm">
-                  <div className="text-3xl font-display font-bold text-tech-500">7+ hrs</div>
-                  <p className="text-sm text-foreground/80 mt-2">Average daily power gained</p>
-                </div>
-              </div>
             </div>
           </div>
           
@@ -174,32 +152,8 @@ const ImpactSection = () => {
           </div>
         </div>
         
-        {/* Impact Statistics */}
-        <div 
-          className={`grid grid-cols-2 md:grid-cols-4 gap-4 transition-all duration-1000 delay-700 ${
-            isVisible ? "opacity-100" : "opacity-0 translate-y-10"
-          }`}
-        >
-          <div className="bg-gradient-to-br from-solar-500/10 to-tech-500/10 rounded-lg p-6 text-center">
-            <div className="text-3xl font-display font-bold">₦25M+</div>
-            <p className="text-sm text-foreground/80 mt-2">Saved on fuel costs</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-solar-500/10 to-tech-500/10 rounded-lg p-6 text-center">
-            <div className="text-3xl font-display font-bold">15k+</div>
-            <p className="text-sm text-foreground/80 mt-2">Connected devices</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-solar-500/10 to-tech-500/10 rounded-lg p-6 text-center">
-            <div className="text-3xl font-display font-bold">85%</div>
-            <p className="text-sm text-foreground/80 mt-2">Reduction in outages</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-solar-500/10 to-tech-500/10 rounded-lg p-6 text-center">
-            <div className="text-3xl font-display font-bold">12</div>
-            <p className="text-sm text-foreground/80 mt-2">Nigerian states covered</p>
-          </div>
-        </div>
+        {/* Impact Statistics - Now using ImpactCounter component */}
+        <ImpactCounter />
       </div>
     </section>
   );

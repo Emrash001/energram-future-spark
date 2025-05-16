@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -48,6 +49,7 @@ const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps) => (
 const LearnMorePage = () => {
   const { toast } = useToast();
   const photoSectionRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   
   useEffect(() => {
     document.title = "Learn More About Energram | Detailed Specifications";

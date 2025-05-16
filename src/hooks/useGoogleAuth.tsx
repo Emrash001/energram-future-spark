@@ -10,6 +10,13 @@ import {
 import { auth } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 
+// List of admin emails
+const ADMIN_EMAILS = [
+  "yekinirasheed2002@gmail.com",
+  "durosavic@gmail.com",
+  "lauretteibekwe@gmail.com"
+];
+
 export const useGoogleAuth = () => {
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +45,7 @@ export const useGoogleAuth = () => {
       });
       
       // If admin user, redirect to admin dashboard
-      if (result.user.email === "yekinirasheed2002@gmail.com") {
+      if (result.user.email && ADMIN_EMAILS.includes(result.user.email)) {
         navigate("/admin");
       } else {
         // For regular users, redirect to home or return to previous page
@@ -72,7 +79,7 @@ export const useGoogleAuth = () => {
     }
   };
 
-  const isAdmin = user?.email === "yekinirasheed2002@gmail.com";
+  const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 
   return { user, isLoading, signInWithGoogle, signOut, isAdmin };
 };

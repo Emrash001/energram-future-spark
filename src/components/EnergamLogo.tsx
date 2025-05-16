@@ -9,14 +9,14 @@ interface EnergamLogoProps {
 }
 
 const EnergamLogo = ({ className, variant = "default" }: EnergamLogoProps) => {
-  const { theme } = useTheme();
-  const isDarkMode = theme === "dark";
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
   
   if (variant === "icon") {
     return (
       <div className={cn("relative w-16 h-16", className)}>
         <div className={cn(
-          "w-full h-full rounded-full overflow-hidden",
+          "w-full h-full rounded-full overflow-hidden flex items-center justify-center",
           isDarkMode ? "bg-white p-1.5 shadow-lg" : ""
         )}>
           <img
@@ -33,7 +33,7 @@ const EnergamLogo = ({ className, variant = "default" }: EnergamLogoProps) => {
     return (
       <div className={cn("flex items-center space-x-2", className)}>
         <div className={cn(
-          "w-16 h-16 rounded-full overflow-hidden", 
+          "w-16 h-16 rounded-full overflow-hidden flex items-center justify-center", 
           isDarkMode ? "bg-white p-1.5 shadow-md" : ""
         )}>
           <img

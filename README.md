@@ -1,73 +1,113 @@
-# Welcome to your Lovable project
+# ⚡ Energram – Smart + Renewable Energy for Nigeria
 
-## Project info
+Energram is a smart, solar-powered solution delivering clean electricity and intelligent connectivity to Nigerian communities facing daily blackouts. Combining solar, IoT, and AI in one portable power station, Energram is built to tackle energy poverty with innovation and impact.
 
-**URL**: https://lovable.dev/projects/49326851-c356-4890-bccb-e9eb1b767367
+---
 
-## How can I edit this code?
+## 🚀 Live Site
 
-There are several ways of editing your application.
+Visit the live deployment here:  
+🔗 [https://energram.vercel.app](https://energram.vercel.app)
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/49326851-c356-4890-bccb-e9eb1b767367) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
+## 🛠️ Tech Stack
 
 This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- ⚛️ React + TypeScript  
+- ⚡ Vite  
+- 🎨 Tailwind CSS  
+- 🧱 ShadCN UI Components  
+- 🔐 Firebase (Auth + Firestore)  
+- 💳 Paystack (Payment Integration)  
+- ☁️ Vercel (Hosting)
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/49326851-c356-4890-bccb-e9eb1b767367) and click on Share -> Publish.
+## 📦 Local Development Setup
 
-## Can I connect a custom domain to my Lovable project?
+To run this project locally:
 
-Yes, you can!
+```bash
+# 1. Clone the repository
+git clone https://github.com/YourUsername/energram.git
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+# 2. Navigate to the project directory
+cd energram
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+# 3. Install dependencies
+npm install
+
+# 4. Start the development server
+npm run dev
+```
+
+The app will be available at `http://localhost:8080`
+
+---
+
+## 🌍 Deployment
+
+This project is hosted on **Vercel**.  
+To deploy manually:
+
+1. Push your code to a GitHub repository
+2. Connect the repo to [https://vercel.com](https://vercel.com)
+3. Configure environment variables (Firebase, Paystack)
+4. Set build command: `npm run build`
+5. Set output directory: `dist`
+
+---
+
+## 🔐 Admin Access
+
+The admin dashboard is only accessible to approved admin accounts.  
+You can update admin access logic via Firebase Auth or Firestore role flags.
+
+---
+
+## 💡 Features
+
+- Google Sign-In Authentication
+- Admin dashboard for managing orders, waitlists, partnerships
+- Firebase-integrated contact & order forms
+- Paystack inline payments for PaaS and purchase models
+- Responsive UI with dark mode toggle
+- WhatsApp floating support button
+- Route protection and redirect logic
+- Forgot Password flow via Firebase
+
+---
+
+## 🤝 Contributing
+
+Interested in contributing to Energram?  
+Pull requests are welcome. Here's how to get started:
+
+```bash
+# Create a new branch
+git checkout -b feature/your-feature-name
+
+# Make your changes
+
+# Commit and push
+git commit -m "Add: new feature"
+git push origin feature/your-feature-name
+
+# Open a Pull Request
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.  
+Feel free to modify, reuse, and build upon Energram with attribution.
+
+---
+
+### 🧠 Vision
+
+> Energram is not just a product — it's a mission to restore power, dignity, and digital inclusion to underserved communities across Africa.  
+> _Built by innovators. Backed by purpose._

@@ -50,7 +50,7 @@ const Navbar = () => {
     { text: "Pricing", href: "/pricing" },
     { text: "App", href: "/download" },
     { text: "Learn More", href: "/learn-more" },
-    { text: "See in Action", href: "/see-in-action" },
+    { text: "Product demo", href: "/see-in-action" },
     { text: "Contact", href: "/contact" },
     { text: "FAQ", href: "/faq" },
   ];

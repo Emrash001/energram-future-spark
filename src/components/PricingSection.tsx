@@ -26,7 +26,7 @@ const PricingSection = () => {
 
   const purchaseFeatures = [
     "Solar panel with integrated battery",
-    "Wi-Fi hotspot for up to 15 devices",
+    "Wi-Fi hotspot for up to 5 devices",
     "Mobile app for monitoring and control",
     "2-year warranty and support",
     "Free software updates",
@@ -45,7 +45,7 @@ const PricingSection = () => {
   const comparisonData = [
     {
       item: "Monthly Expense",
-      energram: "₦12,000",
+      energram: "₦15,000",
       generator: "₦25,000",
       candles: "₦6,000",
     },
@@ -135,7 +135,7 @@ const PricingSection = () => {
                 <div className="bg-gradient-to-r from-tech-500 to-solar-500 text-white p-6">
                   <h3 className="text-xl font-semibold">One-time Purchase</h3>
                   <div className="mt-4">
-                    <span className="text-3xl font-display font-bold">₦200,000</span>
+                    <span className="text-3xl font-display font-bold">₦500,000</span>
                   </div>
                 </div>
                 
@@ -174,7 +174,7 @@ const PricingSection = () => {
                 <div className="bg-gradient-to-r from-solar-500 to-tech-500 text-white p-6">
                   <h3 className="text-xl font-semibold">Power-as-a-Service</h3>
                   <div className="mt-4">
-                    <span className="text-3xl font-display font-bold">₦12,000</span>
+                    <span className="text-3xl font-display font-bold">₦15,000</span>
                     <span className="text-sm ml-1">/month</span>
                   </div>
                 </div>

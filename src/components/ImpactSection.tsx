@@ -35,17 +35,17 @@ const ImpactSection = () => {
   const testimonials = [
     {
       quote: "Before Energram, I couldn't study after sunset. Now I can prepare for exams anytime, and the Wi-Fi helps me access research materials.",
-      author: "Adebayo O.",
-      role: "Engineering Student, University of Lagos"
+      author: "Rasheed Yekini.",
+      role: "Engineering Student, University of Ibadan"
     },
     {
       quote: "My shop stays open even during blackouts. The Wi-Fi lets me process mobile payments when cellular networks are congested.",
-      author: "Chioma N.",
-      role: "Small Business Owner, Abuja"
+      author: "Victor D.",
+      role: "Business Owner, Abuja"
     },
     {
       quote: "Our family used to spend ₦25,000 monthly on fuel for generators. Energram paid for itself in less than 5 months.",
-      author: "Emmanuel K.",
+      author: "Laurette I.",
       role: "Family of Four, Lagos"
     }
   ];
@@ -87,7 +87,7 @@ const ImpactSection = () => {
                       <span className="text-xs font-semibold">1</span>
                     </div>
                     <div>
-                      <h4 className="font-semibold">2020: NetXus Founded</h4>
+                      <h4 className="font-semibold">March 2024: NetXus Founded</h4>
                       <p className="text-sm text-foreground/80 mt-1">
                         Started as a research project to address Nigeria's dual challenges of energy access and internet connectivity.
                       </p>
@@ -99,9 +99,9 @@ const ImpactSection = () => {
                       <span className="text-xs font-semibold">2</span>
                     </div>
                     <div>
-                      <h4 className="font-semibold">2021: First Prototype</h4>
+                      <h4 className="font-semibold">June 2024: First Prototype</h4>
                       <p className="text-sm text-foreground/80 mt-1">
-                        Developed and tested our first solar-powered Wi-Fi unit at University of Lagos student housing.
+                        Developed and tested our first solar-powered IoT enabled prototype at University of Ibadan student housing.
                       </p>
                     </div>
                   </div>
@@ -111,9 +111,9 @@ const ImpactSection = () => {
                       <span className="text-xs font-semibold">3</span>
                     </div>
                     <div>
-                      <h4 className="font-semibold">2022: Commercial Launch</h4>
+                      <h4 className="font-semibold">December 2024: Commercial Launch</h4>
                       <p className="text-sm text-foreground/80 mt-1">
-                        Released commercial product and established partnerships with local ISPs for reliable connectivity.
+                        Registered as an LLC, funded by I2M for MVP development, and granted a patent for our innovative product.
                       </p>
                     </div>
                   </div>
@@ -123,7 +123,7 @@ const ImpactSection = () => {
                       <span className="text-xs font-semibold">4</span>
                     </div>
                     <div>
-                      <h4 className="font-semibold">2023: Energram Rebrand</h4>
+                      <h4 className="font-semibold"> 2025: Energram Rebrand</h4>
                       <p className="text-sm text-foreground/80 mt-1">
                         Evolved into Energram with expanded features, AI integration, and a subscription service model.
                       </p>

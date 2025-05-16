@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import LearnMorePage from "@/pages/LearnMorePage";
 
 const HeroSection = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -50,7 +51,7 @@ const HeroSection = () => {
           <div className={`space-y-8 transition-all duration-1000 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight">
               Powering the Future with{" "}
-              <span className="text-gradient">Solar + Intelligence</span>
+              <span className="text-gradient">Smart + Renewable power station</span>
             </h1>
             
             <p className="text-lg md:text-xl text-foreground/80 max-w-lg">
@@ -67,7 +68,11 @@ const HeroSection = () => {
               >
                 See It In Action
               </Button>
-              <Button variant="outline" size="lg">
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={() => LearnMorePage()}
+              >
                 Learn More
               </Button>
             </div>
@@ -75,7 +80,7 @@ const HeroSection = () => {
             <div className="pt-4">
               <p className="text-sm text-foreground/60 flex items-center gap-2">
                 <span className="block w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                Currently powering 2,500+ homes and businesses in Nigeria
+               On a mission to deliver clean, intelligent energy to thousands of homes and small businesses.
               </p>
             </div>
           </div>

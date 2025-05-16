@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import FAQPage from "@/pages/FAQPage";
 
 const SupportSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -96,7 +97,7 @@ const SupportSection = () => {
             </Accordion>
             
             <div className="mt-8">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={() => FAQPage()}>
                 View All FAQs
               </Button>
             </div>

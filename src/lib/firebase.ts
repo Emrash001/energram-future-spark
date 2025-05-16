@@ -3,16 +3,17 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-// Your web app's Firebase configuration
-// Replace with your actual Firebase config
+
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyD1Gnp3qgmq8KoccvXl9IIUeWBtQexke_8",
+  authDomain: "energram-175e0.firebaseapp.com",
+  projectId: "energram-175e0",
+  storageBucket: "energram-175e0.firebasestorage.app",
+  messagingSenderId: "960293759288",
+  appId: "1:960293759288:web:a08a50764349d7bb8c79cd"
 };
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

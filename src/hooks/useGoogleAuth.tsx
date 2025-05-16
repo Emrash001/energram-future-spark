@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   signInWithPopup, 
   GoogleAuthProvider, 
@@ -14,6 +14,7 @@ export const useGoogleAuth = () => {
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const provider = new GoogleAuthProvider();
 
@@ -39,6 +40,10 @@ export const useGoogleAuth = () => {
       // If admin user, redirect to admin dashboard
       if (result.user.email === "yekinirasheed2002@gmail.com") {
         navigate("/admin");
+      } else {
+        // For regular users, redirect to home or return to previous page
+        const origin = location.state?.from || "/";
+        navigate(origin);
       }
     } catch (error: any) {
       toast({

@@ -6,6 +6,7 @@ import ThemeToggle from "./ThemeToggle";
 import { Menu, X, LogIn, LogOut, ChevronDown, User } from "lucide-react";
 import EnergamLogo from "./EnergamLogo";
 import { useGoogleAuth } from "@/hooks/useGoogleAuth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,6 +44,25 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  // Get user initials for avatar
+  const getUserInitials = () => {
+    if (user?.displayName) {
+      const nameParts = user.displayName.split(' ');
+      if (nameParts.length >= 2) {
+        return `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase();
+      }
+      return nameParts[0][0].toUpperCase();
+    } else if (user?.email) {
+      return user.email[0].toUpperCase();
+    }
+    return 'U';
+  };
+
+  // Get user avatar image
+  const getUserAvatar = () => {
+    return user?.photoURL || '';
   };
 
   const navLinks = [
@@ -87,9 +107,17 @@ const Navbar = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="relative">
-                    <span className="w-2 h-2 absolute right-2 top-2 bg-green-500 rounded-full"></span>
-                    {user.displayName || user.email?.split('@')[0] || 'Account'}
+                  <Button variant="ghost" size="sm" className="relative flex items-center gap-2 hover:bg-background/80">
+                    <Avatar className="h-8 w-8">
+                      {getUserAvatar() && (
+                        <AvatarImage src={getUserAvatar()} alt={user.displayName || 'User'} />
+                      )}
+                      <AvatarFallback className="bg-gradient-to-br from-solar-500 to-tech-500 text-white">
+                        {getUserInitials()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="hidden sm:inline-block text-sm">{user.displayName || user.email?.split('@')[0]}</span>
+                    <span className="w-2 h-2 absolute right-0 top-0 bg-green-500 rounded-full"></span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
@@ -130,6 +158,18 @@ const Navbar = () => {
           {/* Mobile Navigation Toggle */}
           <div className="flex items-center space-x-4 md:hidden">
             <ThemeToggle />
+            
+            {user && (
+              <Avatar className="h-8 w-8">
+                {getUserAvatar() && (
+                  <AvatarImage src={getUserAvatar()} alt={user.displayName || 'User'} />
+                )}
+                <AvatarFallback className="bg-gradient-to-br from-solar-500 to-tech-500 text-white">
+                  {getUserInitials()}
+                </AvatarFallback>
+              </Avatar>
+            )}
+            
             <Button
               variant="ghost"
               size="icon"

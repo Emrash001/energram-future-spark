@@ -1,12 +1,36 @@
 
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import LearnMorePage from "@/pages/LearnMorePage";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const HeroSection = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const deviceRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const [waitlistForm, setWaitlistForm] = useState({
+    name: "",
+    email: "",
+    location: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -36,6 +60,50 @@ const HeroSection = () => {
       demoSection.scrollIntoView({ behavior: "smooth" });
     }
   };
+  
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!waitlistForm.name || !waitlistForm.email) {
+      toast({
+        title: "Missing information",
+        description: "Please provide your name and email",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      await addDoc(collection(db, "waitlist"), {
+        ...waitlistForm,
+        timestamp: new Date()
+      });
+      
+      toast({
+        title: "Success!",
+        description: "You've been added to our waitlist. We'll contact you soon!",
+        variant: "default",
+      });
+      
+      setWaitlistForm({
+        name: "",
+        email: "",
+        location: ""
+      });
+      
+    } catch (error) {
+      console.error("Error adding to waitlist:", error);
+      toast({
+        title: "Submission failed",
+        description: "Please try again later",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
@@ -62,7 +130,7 @@ const HeroSection = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Button 
-                onClick={scrollToDemo}
+                onClick={() => navigate("/see-in-action")}
                 size="lg" 
                 className="bg-gradient-to-r from-solar-500 to-tech-500 text-white hover:from-solar-700 hover:to-tech-700 transition-all"
               >
@@ -71,7 +139,7 @@ const HeroSection = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                onClick={() => LearnMorePage()}
+                onClick={() => navigate("/learn-more")}
               >
                 Learn More
               </Button>
@@ -82,6 +150,74 @@ const HeroSection = () => {
                 <span className="block w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                On a mission to deliver clean, intelligent energy to thousands of homes and small businesses.
               </p>
+            </div>
+            
+            {/* Waitlist Button & Drawer */}
+            <div className="pt-4">
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <Button 
+                    variant="secondary" 
+                    className="bg-gradient-to-r from-tech-500/20 to-solar-500/20 hover:from-tech-500/30 hover:to-solar-500/30"
+                  >
+                    Be the First to Get Energram
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <div className="mx-auto w-full max-w-sm">
+                    <DrawerHeader>
+                      <DrawerTitle>Join the Waitlist</DrawerTitle>
+                      <DrawerDescription>
+                        Reserve your Energram device. We'll notify you as soon as it's available.
+                      </DrawerDescription>
+                    </DrawerHeader>
+                    <form onSubmit={handleWaitlistSubmit} className="p-4 space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Name</Label>
+                        <Input 
+                          id="name" 
+                          placeholder="Your full name" 
+                          value={waitlistForm.name}
+                          onChange={(e) => setWaitlistForm(prev => ({ ...prev, name: e.target.value }))}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input 
+                          id="email" 
+                          type="email" 
+                          placeholder="Your email address" 
+                          value={waitlistForm.email}
+                          onChange={(e) => setWaitlistForm(prev => ({ ...prev, email: e.target.value }))}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="location">Location (optional)</Label>
+                        <Input 
+                          id="location" 
+                          placeholder="City, State" 
+                          value={waitlistForm.location}
+                          onChange={(e) => setWaitlistForm(prev => ({ ...prev, location: e.target.value }))}
+                        />
+                      </div>
+                    </form>
+                    <DrawerFooter>
+                      <Button 
+                        onClick={handleWaitlistSubmit}
+                        disabled={isSubmitting}
+                        className="bg-gradient-to-r from-solar-500 to-tech-500 text-white hover:from-solar-700 hover:to-tech-700 transition-all"
+                      >
+                        {isSubmitting ? "Submitting..." : "Join Waitlist"}
+                      </Button>
+                      <DrawerClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </div>
+                </DrawerContent>
+              </Drawer>
             </div>
           </div>
           

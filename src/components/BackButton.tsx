@@ -10,7 +10,7 @@ const BackButton = () => {
     <Button
       variant="outline"
       size="sm"
-      className="flex items-center gap-1"
+      className="flex items-center gap-1 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all mb-6"
       onClick={() => navigate(-1)}
     >
       <ChevronLeft className="h-4 w-4" />

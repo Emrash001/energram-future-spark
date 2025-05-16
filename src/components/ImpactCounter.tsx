@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -53,10 +54,10 @@ const Counter = ({ value, label, prefix = "", suffix = "", duration = 2000 }: Co
 
 const ImpactCounter = () => {
   const [stats, setStats] = useState({
-    devices: 235,
-    co2: 1450,
-    users: 720,
-    hours: 42560
+    devices: 2500,
+    co2: 25000000,
+    users: 15000,
+    hours: 85
   });
   
   const [isVisible, setIsVisible] = useState(false);
@@ -110,30 +111,52 @@ const ImpactCounter = () => {
         isVisible ? "opacity-100" : "opacity-0 translate-y-10"
       }`}
     >
-      <h2 className="text-2xl font-display font-bold mb-8 text-center">Our Impact</h2>
+      <h2 className="text-2xl font-display font-bold mb-4 text-center">
+        Where We're Headed in the Next 12 Months
+      </h2>
+      <p className="text-center mb-8 text-foreground/70 max-w-2xl mx-auto">
+        Projected based on pilot testing & product modeling
+      </p>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-12">
         <Counter 
           value={stats.devices} 
-          label="Devices Distributed" 
+          label="Homes and businesses targeted across Nigeria" 
+          prefix="+" 
           duration={2000}
         />
         
         <Counter 
-          value={stats.co2} 
-          label="CO₂ Saved (tonnes)" 
+          value={7} 
+          label="Hours/day of clean, consistent solar power" 
+          suffix="+" 
           duration={2500}
         />
         
         <Counter 
-          value={stats.users} 
-          label="Users Powered" 
+          value={stats.co2} 
+          label="In fuel costs saved for families and businesses" 
+          prefix="₦" 
           duration={3000}
         />
         
         <Counter 
-          value={stats.hours} 
-          label="Blackout Hours Avoided" 
+          value={12} 
+          label="Priority states connected" 
+          duration={2500}
+        />
+        
+        <Counter 
+          value={15000} 
+          label="Smart devices expected online" 
+          suffix="+" 
+          duration={3000}
+        />
+        
+        <Counter 
+          value={85} 
+          label="Reduction in blackouts for our users" 
+          suffix="%" 
           duration={3500}
         />
       </div>

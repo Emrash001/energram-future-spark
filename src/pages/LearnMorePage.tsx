@@ -109,7 +109,7 @@ const LearnMorePage = () => {
                   </div>
                 </div>
                 <p className="text-sm text-foreground/70">
-                  Eliminate energy poverty by delivering reliable, affordable, and clean energy solutions to every Nigerian household and business.
+                  Eliminate energy poverty by delivering reliable, affordable, and clean energy solutions to every Nigerian students, household and business.
                 </p>
               </div>
               
@@ -164,7 +164,7 @@ const LearnMorePage = () => {
                     <ul className="space-y-4">
                       <li className="flex justify-between">
                         <span className="text-foreground/70">Capacity</span>
-                        <span className="font-medium">1500Wh</span>
+                        <span className="font-medium">1000Wh</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-foreground/70">Battery Type</span>
@@ -209,7 +209,7 @@ const LearnMorePage = () => {
                       </li>
                       <li className="flex justify-between">
                         <span className="text-foreground/70">Alternative Charging</span>
-                        <span className="font-medium">AC wall outlet (optional)</span>
+                        <span className="font-medium">AC wall outlet supported</span>
                       </li>
                     </ul>
                   </div>
@@ -226,11 +226,11 @@ const LearnMorePage = () => {
                       <ul className="space-y-2">
                         <li className="flex justify-between">
                           <span className="text-foreground/70">AC Outlets</span>
-                          <span>2 × 220V</span>
+                          <span>220V</span>
                         </li>
                         <li className="flex justify-between">
                           <span className="text-foreground/70">USB-A Ports</span>
-                          <span>4 × 5V/2.4A</span>
+                          <span>3 × 5V/2.4A</span>
                         </li>
                         <li className="flex justify-between">
                           <span className="text-foreground/70">USB-C Ports</span>
@@ -359,7 +359,7 @@ const LearnMorePage = () => {
                       <ul className="space-y-2">
                         <li className="flex justify-between">
                           <span className="text-foreground/70">Voice Assistant</span>
-                          <span>Alexa & Google Assistant</span>
+                          <span>Google Assistant (Under development)</span>
                         </li>
                         <li className="flex justify-between">
                           <span className="text-foreground/70">Smart Plugs</span>
@@ -423,11 +423,11 @@ const LearnMorePage = () => {
                       </li>
                       <li className="flex justify-between">
                         <span className="text-foreground/70">Display</span>
-                        <span className="font-medium">2.4" color LCD screen</span>
+                        <span className="font-medium">1.4" color Oled screen</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-foreground/70">Controls</span>
-                        <span className="font-medium">Touch-enabled & physical buttons</span>
+                        <span className="font-medium">Portable Keypad</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-foreground/70">LED Indicators</span>
@@ -542,7 +542,7 @@ const LearnMorePage = () => {
                       </li>
                       <li className="flex justify-between">
                         <span className="text-foreground/70">Device Recognition</span>
-                        <span className="font-medium">Automatic appliance detection</span>
+                        <span className="font-medium">Automatic appliance detection(coming soon)</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-foreground/70">Cost Savings</span>

@@ -13,7 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 // List of admin emails
 const ADMIN_EMAILS = [
   "yekinirasheed2002@gmail.com",
-  "durosavic@gmail.com",
+  "durosarovic@gmail.com",
   "lauretteibekwe@gmail.com"
 ];
 

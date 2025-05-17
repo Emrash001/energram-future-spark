@@ -1,6 +1,8 @@
 
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useGoogleAuth } from "@/hooks/useGoogleAuth";
+import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -9,6 +11,18 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) => {
   const { isLoading, user, isAdmin } = useGoogleAuth();
+  const { toast } = useToast();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!isLoading && adminOnly && user && !isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You don't have permission to access this page.",
+        variant: "destructive",
+      });
+    }
+  }, [isLoading, user, isAdmin, adminOnly, toast]);
 
   if (isLoading) {
     return (
@@ -22,7 +36,7 @@ const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) =>
   }
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
   if (adminOnly && !isAdmin) {

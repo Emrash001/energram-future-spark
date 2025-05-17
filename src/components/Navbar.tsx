@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -19,7 +18,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, signOut, isAdmin } = useGoogleAuth();
+  const { user, signOut, isAdmin, isSuperAdmin } = useGoogleAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -141,9 +140,14 @@ const Navbar = () => {
                 <DropdownMenuContent align="end" className="w-56">
                   {isAdmin && (
                     <DropdownMenuItem asChild>
-                      <Link to="/admin" className="w-full cursor-pointer">
+                      <Link to="/admin" className="w-full cursor-pointer flex items-center">
                         <User className="mr-2 h-4 w-4" />
                         Admin Dashboard
+                        {isSuperAdmin && (
+                          <span className="ml-2 text-xs bg-solar-500 text-white px-2 py-0.5 rounded-full">
+                            Super
+                          </span>
+                        )}
                       </Link>
                     </DropdownMenuItem>
                   )}
@@ -224,7 +228,7 @@ const Navbar = () => {
                 {isAdmin && (
                   <Link
                     to="/admin"
-                    className={`block py-2 font-medium ${
+                    className={`flex items-center py-2 font-medium ${
                       isActiveLink("/admin")
                         ? "text-foreground relative pl-3 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4 before:w-1 before:bg-gradient-to-b before:from-solar-500 before:to-tech-500 before:rounded-full"
                         : "text-foreground/70 hover:text-foreground"
@@ -232,6 +236,11 @@ const Navbar = () => {
                   >
                     <User className="inline-block mr-2 h-4 w-4" />
                     Admin Dashboard
+                    {isSuperAdmin && (
+                      <span className="ml-2 text-xs bg-solar-500 text-white px-2 py-0.5 rounded-full">
+                        Super
+                      </span>
+                    )}
                   </Link>
                 )}
                 <button

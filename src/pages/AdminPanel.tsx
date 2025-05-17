@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
@@ -9,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Search, Sliders, Filter, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { 
   Table,
   TableBody,
@@ -30,6 +29,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { Badge } from "@/components/ui/badge";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 
 interface Order {
   id: string;
@@ -73,8 +74,8 @@ interface Partnership {
 const AdminPanel = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { user, isAdmin, isSuperAdmin } = useGoogleAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
@@ -96,19 +97,27 @@ const AdminPanel = () => {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email === "yekinirasheed2002@gmail.com") {
-        setIsAuthenticated(true);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (!isAdmin) {
+        toast({
+          title: "Access denied",
+          description: "Admins only.",
+          variant: "destructive"
+        });
+        navigate("/");
+        return;
+      }
+      
+      if (currentUser) {
         fetchData();
       } else {
-        setIsAuthenticated(false);
         navigate("/admin-login");
       }
       setIsLoading(false);
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, [navigate, isAdmin]);
 
   const prepareAnalyticsData = (ordersData: Order[]) => {
     // Group orders by month
@@ -230,10 +239,6 @@ const AdminPanel = () => {
     );
   }
 
-  if (!isAuthenticated) {
-    return null; // Redirect handled by useEffect
-  }
-
   // Data for pie chart - order distribution
   const distributionData = [
     { name: 'Paid', value: stats.completedOrders },
@@ -244,12 +249,21 @@ const AdminPanel = () => {
     <div className="min-h-screen pt-20 pb-16">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-display font-bold">
-            Energram Admin Dashboard
-          </h1>
+          <div>
+            <h1 className="text-3xl font-display font-bold">
+              Energram Admin Dashboard
+            </h1>
+            <div className="flex items-center mt-1">
+              <Badge variant={isSuperAdmin ? "default" : "outline"} className={isSuperAdmin ? "bg-solar-500 hover:bg-solar-600" : ""}>
+                {isSuperAdmin ? "Super Admin" : "Admin"}
+              </Badge>
+              <span className="text-sm ml-2 text-muted-foreground">{user?.email}</span>
+            </div>
+          </div>
           <div className="flex items-center gap-4">
             <Avatar>
-              <AvatarFallback>AD</AvatarFallback>
+              <AvatarImage src={user?.photoURL || ''} />
+              <AvatarFallback>{user?.email?.substring(0, 2).toUpperCase() || 'AD'}</AvatarFallback>
             </Avatar>
             <Button onClick={handleSignOut} variant="outline">Sign Out</Button>
           </div>
@@ -345,7 +359,7 @@ const AdminPanel = () => {
                   <XAxis dataKey="name" />
                   <YAxis yAxisId="left" orientation="left" />
                   <YAxis yAxisId="right" orientation="right" />
-                  <Tooltip />
+                  <RechartsTooltip />
                   <Bar yAxisId="left" dataKey="orders" fill="#8884d8" name="Orders" />
                   <Bar yAxisId="right" dataKey="revenue" fill="#82ca9d" name="Revenue (₦)" />
                 </BarChart>
@@ -373,7 +387,7 @@ const AdminPanel = () => {
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <RechartsTooltip />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -387,6 +401,7 @@ const AdminPanel = () => {
             <TabsTrigger value="waitlist">Waitlist</TabsTrigger>
             <TabsTrigger value="contacts">Contact Messages</TabsTrigger>
             <TabsTrigger value="partnerships">Partnership Inquiries</TabsTrigger>
+            {isSuperAdmin && <TabsTrigger value="admins">Manage Admins</TabsTrigger>}
           </TabsList>
           
           {/* Orders Tab */}
@@ -627,6 +642,73 @@ const AdminPanel = () => {
               )}
             </div>
           </TabsContent>
+
+          {/* Super Admin Only: Manage Admins Tab */}
+          {isSuperAdmin && (
+            <TabsContent value="admins">
+              <div className="bg-card border rounded-lg p-6 shadow-sm">
+                <h3 className="font-medium text-lg mb-4">Admin Management</h3>
+                <p className="text-muted-foreground mb-6">
+                  As Super Admin, you can manage access to the admin dashboard. Regular admins can view data but cannot manage other admins.
+                </p>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="font-medium mb-2">Super Admin</h4>
+                    <div className="p-4 border rounded-md bg-background/50 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10 border-2 border-solar-500">
+                          <AvatarFallback>SA</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">yekinirasheed2002@gmail.com</p>
+                          <p className="text-sm text-muted-foreground">Full access and control</p>
+                        </div>
+                      </div>
+                      <Badge className="bg-solar-500 hover:bg-solar-600">Super Admin</Badge>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium mb-2">Standard Admins</h4>
+                    <div className="space-y-3">
+                      <div className="p-4 border rounded-md bg-background/50 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-10 w-10">
+                            <AvatarFallback>DA</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium">durosarovic@gmail.com</p>
+                            <p className="text-sm text-muted-foreground">Limited admin access</p>
+                          </div>
+                        </div>
+                        <Badge variant="outline">Admin</Badge>
+                      </div>
+                      
+                      <div className="p-4 border rounded-md bg-background/50 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-10 w-10">
+                            <AvatarFallback>LI</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium">lauretteibekwe@gmail.com</p>
+                            <p className="text-sm text-muted-foreground">Limited admin access</p>
+                          </div>
+                        </div>
+                        <Badge variant="outline">Admin</Badge>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-8 pt-6 border-t">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    <strong>Note:</strong> Admin roles are hardcoded for security. Contact the Super Admin to modify access rights.
+                  </p>
+                </div>
+              </div>
+            </TabsContent>
+          )}
         </Tabs>
       </div>
     </div>

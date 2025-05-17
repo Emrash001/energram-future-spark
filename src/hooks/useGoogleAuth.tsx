@@ -10,9 +10,12 @@ import {
 import { auth } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 
-// List of admin emails
+// Super Admin email with absolute authority
+const SUPER_ADMIN_EMAIL = "yekinirasheed2002@gmail.com";
+
+// List of all admin emails (including super admin)
 const ADMIN_EMAILS = [
-  "yekinirasheed2002@gmail.com",
+  SUPER_ADMIN_EMAIL,
   "durosarovic@gmail.com",
   "lauretteibekwe@gmail.com"
 ];
@@ -79,7 +82,9 @@ export const useGoogleAuth = () => {
     }
   };
 
+  // Role-based access control
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
+  const isSuperAdmin = user?.email === SUPER_ADMIN_EMAIL;
 
-  return { user, isLoading, signInWithGoogle, signOut, isAdmin };
+  return { user, isLoading, signInWithGoogle, signOut, isAdmin, isSuperAdmin };
 };

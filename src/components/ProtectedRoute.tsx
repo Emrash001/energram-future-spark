@@ -7,22 +7,29 @@ import { useEffect } from "react";
 interface ProtectedRouteProps {
   children: React.ReactNode;
   adminOnly?: boolean;
+  superAdminOnly?: boolean;
 }
 
-const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) => {
-  const { isLoading, user, isAdmin } = useGoogleAuth();
+const ProtectedRoute = ({ 
+  children, 
+  adminOnly = false, 
+  superAdminOnly = false 
+}: ProtectedRouteProps) => {
+  const { isLoading, user, isAdmin, isSuperAdmin } = useGoogleAuth();
   const { toast } = useToast();
   const location = useLocation();
 
   useEffect(() => {
-    if (!isLoading && adminOnly && user && !isAdmin) {
-      toast({
-        title: "Access Denied",
-        description: "You don't have permission to access this page.",
-        variant: "destructive",
-      });
+    if (!isLoading && user) {
+      if ((adminOnly && !isAdmin) || (superAdminOnly && !isSuperAdmin)) {
+        toast({
+          title: "Access Denied",
+          description: "You don't have permission to access this page.",
+          variant: "destructive",
+        });
+      }
     }
-  }, [isLoading, user, isAdmin, adminOnly, toast]);
+  }, [isLoading, user, isAdmin, isSuperAdmin, adminOnly, superAdminOnly, toast]);
 
   if (isLoading) {
     return (
@@ -37,6 +44,10 @@ const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) =>
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
+
+  if (superAdminOnly && !isSuperAdmin) {
+    return <Navigate to="/" replace />;
   }
 
   if (adminOnly && !isAdmin) {

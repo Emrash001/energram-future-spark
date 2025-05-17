@@ -47,10 +47,20 @@ const ProtectedRoute = ({
   }
 
   if (superAdminOnly && !isSuperAdmin) {
+    toast({
+      title: "Access denied",
+      description: "Super Admin access required.",
+      variant: "destructive",
+    });
     return <Navigate to="/" replace />;
   }
 
   if (adminOnly && !isAdmin) {
+    toast({
+      title: "Access denied",
+      description: "Admins only.",
+      variant: "destructive",
+    });
     return <Navigate to="/" replace />;
   }
 

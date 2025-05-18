@@ -7,15 +7,13 @@ import {
   onAuthStateChanged, 
   signOut as firebaseSignOut 
 } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 
-// Super Admin email with absolute authority
+// The super admin email for initial seeding
 const SUPER_ADMIN_EMAIL = "yekinirasheed2002@gmail.com";
-
-// List of all admin emails (including super admin)
-const ADMIN_EMAILS = [
-  SUPER_ADMIN_EMAIL,
+const INITIAL_ADMINS = [
   "durosarovic@gmail.com",
   "lauretteibekwe@gmail.com"
 ];
@@ -23,14 +21,63 @@ const ADMIN_EMAILS = [
 export const useGoogleAuth = () => {
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const provider = new GoogleAuthProvider();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setUser(firebaseUser);
+      
+      if (firebaseUser) {
+        try {
+          // Check for user document in Firestore
+          const userRef = doc(db, "users", firebaseUser.uid);
+          const userSnap = await getDoc(userRef);
+          
+          if (userSnap.exists()) {
+            // User exists, get role
+            const userData = userSnap.data();
+            setIsAdmin(userData.role === "admin" || userData.role === "super_admin");
+            setIsSuperAdmin(userData.role === "super_admin");
+          } else {
+            // First-time user, create document with appropriate role
+            let role = "user";
+            
+            // Seed initial admins
+            if (firebaseUser.email === SUPER_ADMIN_EMAIL) {
+              role = "super_admin";
+            } else if (INITIAL_ADMINS.includes(firebaseUser.email || "")) {
+              role = "admin";
+            }
+            
+            await setDoc(userRef, {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              displayName: firebaseUser.displayName,
+              photoURL: firebaseUser.photoURL,
+              role: role,
+              createdAt: new Date()
+            });
+            
+            setIsAdmin(role === "admin" || role === "super_admin");
+            setIsSuperAdmin(role === "super_admin");
+          }
+        } catch (error) {
+          console.error("Error checking user role:", error);
+          // Fallback to default values
+          setIsAdmin(false);
+          setIsSuperAdmin(false);
+        }
+      } else {
+        // User signed out
+        setIsAdmin(false);
+        setIsSuperAdmin(false);
+      }
+      
       setIsLoading(false);
     });
 
@@ -47,8 +94,35 @@ export const useGoogleAuth = () => {
         variant: "default"
       });
       
-      // If admin user, redirect to admin dashboard
-      if (result.user.email && ADMIN_EMAILS.includes(result.user.email)) {
+      // Create or update the user document to ensure it exists
+      const userRef = doc(db, "users", result.user.uid);
+      const userSnap = await getDoc(userRef);
+      
+      if (!userSnap.exists()) {
+        // First-time user, create document with appropriate role
+        let role = "user";
+        
+        // Seed initial admins
+        if (result.user.email === SUPER_ADMIN_EMAIL) {
+          role = "super_admin";
+        } else if (INITIAL_ADMINS.includes(result.user.email || "")) {
+          role = "admin";
+        }
+        
+        await setDoc(userRef, {
+          uid: result.user.uid,
+          email: result.user.email,
+          displayName: result.user.displayName,
+          photoURL: result.user.photoURL,
+          role: role,
+          createdAt: new Date()
+        });
+      }
+      
+      // Check user role and redirect accordingly
+      const updatedSnap = await getDoc(userRef);
+      
+      if (updatedSnap.exists() && ["admin", "super_admin"].includes(updatedSnap.data().role)) {
         navigate("/admin");
       } else {
         // For regular users, redirect to home or return to previous page
@@ -81,10 +155,6 @@ export const useGoogleAuth = () => {
       });
     }
   };
-
-  // Role-based access control
-  const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
-  const isSuperAdmin = user?.email === SUPER_ADMIN_EMAIL;
 
   return { user, isLoading, signInWithGoogle, signOut, isAdmin, isSuperAdmin };
 };

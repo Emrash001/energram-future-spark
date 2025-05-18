@@ -111,7 +111,7 @@ const OrderPage = () => {
   };
 
   const getAmount = () => {
-    return selectedPlan === 'purchase' ? 20000000 : 1200000; // Amount in kobo (₦200,000 or ₦12,000)
+    return selectedPlan === 'purchase' ? 50000000 : 1500000;
   };
 
   const initializePayment = () => {
@@ -240,7 +240,7 @@ const OrderPage = () => {
                       : 'text-foreground/60'
                   }`}
                 >
-                  One-time Purchase (₦200,000)
+                  One-time Purchase (₦500,000)
                 </button>
                 <button
                   type="button"
@@ -251,7 +251,7 @@ const OrderPage = () => {
                       : 'text-foreground/60'
                   }`}
                 >
-                  PaaS (₦12,000/semester)
+                  PaaS (₦15,000/semester)
                 </button>
               </div>
 
@@ -330,7 +330,7 @@ const OrderPage = () => {
                   ? paymentInitiated 
                     ? "Processing Payment..." 
                     : "Processing..."
-                  : `Proceed to Payment (₦${selectedPlan === 'purchase' ? '200,000' : '12,000'})`}
+                  : `Proceed to Payment (₦${selectedPlan === 'purchase' ? '500,000' : '15,000'})`}
               </Button>
               
               <p className="text-xs text-center text-foreground/60">

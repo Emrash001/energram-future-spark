@@ -31,7 +31,7 @@ To run this project locally:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YourUsername/energram.git
+git clone https://github.com/muhammadurasheed/energram.git
 
 # 2. Navigate to the project directory
 cd energram

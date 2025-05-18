@@ -97,7 +97,7 @@ const LearnMorePage = () => {
             </h1>
             
             <p className="text-xl text-foreground/80 mb-8 max-w-2xl">
-              Energram combines solar power, AI intelligence, and IoT connectivity to provide a complete energy solution for homes and businesses across Nigeria.
+              Energram combines solar power, AI intelligence, and IoT connectivity to provide a complete energy solution for students homes and businesses across Nigeria.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">

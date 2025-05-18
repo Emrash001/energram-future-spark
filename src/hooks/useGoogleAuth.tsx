@@ -94,11 +94,35 @@ export const useGoogleAuth = () => {
         variant: "default"
       });
       
-      // If admin user, redirect to admin dashboard
+      // Create or update the user document to ensure it exists
       const userRef = doc(db, "users", result.user.uid);
       const userSnap = await getDoc(userRef);
       
-      if (userSnap.exists() && ["admin", "super_admin"].includes(userSnap.data().role)) {
+      if (!userSnap.exists()) {
+        // First-time user, create document with appropriate role
+        let role = "user";
+        
+        // Seed initial admins
+        if (result.user.email === SUPER_ADMIN_EMAIL) {
+          role = "super_admin";
+        } else if (INITIAL_ADMINS.includes(result.user.email || "")) {
+          role = "admin";
+        }
+        
+        await setDoc(userRef, {
+          uid: result.user.uid,
+          email: result.user.email,
+          displayName: result.user.displayName,
+          photoURL: result.user.photoURL,
+          role: role,
+          createdAt: new Date()
+        });
+      }
+      
+      // Check user role and redirect accordingly
+      const updatedSnap = await getDoc(userRef);
+      
+      if (updatedSnap.exists() && ["admin", "super_admin"].includes(updatedSnap.data().role)) {
         navigate("/admin");
       } else {
         // For regular users, redirect to home or return to previous page

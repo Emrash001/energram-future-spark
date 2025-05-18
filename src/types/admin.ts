@@ -46,3 +46,13 @@ export interface AdminStats {
   totalUsers: number;
   waitlistCount: number;
 }
+
+export interface User {
+  id: string;
+  uid?: string;
+  email: string;
+  displayName?: string;
+  photoURL?: string;
+  role: "user" | "admin" | "super_admin";
+  createdAt?: any;
+}
